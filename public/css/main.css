@@ -1,0 +1,147 @@
+body {
+  background: #303030;
+  color: white;
+  font-family: 'Lato', sans-serif;
+}
+
+.score {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 5px;
+  text-transform: uppercase;
+}
+
+.score ul {
+  display: flex;
+  padding-left: 0;
+}
+
+.score li {
+  list-style-type: none;
+  box-sizing: border-box;
+
+}
+
+.score li::before {
+  font-family: "Font Awesome 5 Free";
+  font-size: 18px;
+  margin: 0 2px;
+  font-weight: 900;
+  content: '\f111';
+  color: #808080;
+
+}
+
+.score li.scored::before {
+  content: '\f058';
+  color: #47e822;
+}
+
+.score li.missed::before {
+  content: '\f057';
+  color: #f65335;
+}
+
+.goal {
+  margin: 0 auto;
+  width: 90vw;
+  height: 30vw;
+  border: 10px solid #f0f0f0;
+  border-bottom: none;
+  position: relative;
+}
+
+.goal ul {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+.goal li {
+  box-sizing: border-box;
+  height: 50%;
+  width: 33.333%;
+  border: 1px dashed #c0c0c0;
+  position: relative;
+}
+
+.goal li::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #fbb000;
+  opacity: 0;
+  transition: opacity 0.05s;
+}
+
+
+.goal li.active::before {
+  opacity: 1;
+}
+
+#panelsContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.panel {
+  text-align: center;
+  background: #303030c0;
+  min-width: 33.333%;
+  min-height: 33.333%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  animation: panelAnimation 0.2s both;
+}
+
+button {
+  background: #eaa000;
+  color: #202020;
+  border: none;
+  padding: 0.5em;
+  font-size: 1.2em;
+}
+
+button:hover {
+  background: #fbb000;
+  cursor: pointer;
+}
+
+.big {
+  font-size: 2em;
+}
+
+.color {
+  color: #fbb000;
+}
+
+@keyframes panelAnimation {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1, 0.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

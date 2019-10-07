@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Penalties</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css" integrity="sha384-rtJEYb85SiYWgfpCr0jn174XgJTn4rptSOQsMroFBPQSGLdOC5IbubP6lJ35qoM9" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body>
+    <div id="app">
+      <div v-if="!ok">
+        ERROR
+      </div>
+      <div class="score">
+        {{ yourScore=='p1' ? 'ty' : 'rywal' }}
+        <score-panel :id="p1" :score="[...score.p1]"></score-panel>
+        <div id="role" v-if="role">
+          {{ role=='shoot' ? 'Strzelasz' : 'Bronisz' }}
+        </div>
+        <score-panel :id="p2" :score="[...score.p2]"></score-panel>
+        {{ yourScore=='p2' ? 'ty' : 'rywal' }}
+      </div>
+      <div class="goal">
+        <ul>
+          <li v-for="n in 6" :key="n" @click="select(n)" :class="{active: active==n}"></li>
+        </ul>
+        <div id="panelsContainer" v-show="status != 'game'">
+          <div v-if="!status" class="panel">
+            <button type="button" @click="join()">Zapisz się</button>
+          </div>
+          <div v-if="status=='queue'" class="panel">
+            <p class="color"><i class="fas fa-spinner wait fa-2x fa-spin"></i></p>
+            <p>Poczekaj na znalezienie przeciwnika</p>
+          </div>
+          <div v-if="status=='end'" class="panel">
+            <p>Wynik końcowy:</p>
+            <p class="big color">{{ score[0] }} - {{ score[1] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+    <script src="/js/vue.js" charset="utf-8"></script>
+    <script src="/js/scoreComponent.js" charset="utf-8"></script>
+    <script src="/js/main.js" charset="utf-8"></script>
+  </body>
+</html>
