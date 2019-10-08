@@ -2,24 +2,27 @@ const Socket = io();
 
 const App = new Vue({
   el: '#app',
-  data() {
-    return {
-      ok: true,
-      score: {
-        p1: [null, null, null, null, null],
-        p2: [null, null, null, null, null]
-      },
-      role: '', //shoot or defend
-      selected: false,
-      active: null,
-      status: '', //<empty>, queue, game
-      shootTime: null,
-      yourScore: null
-    }
+  data: {
+    ok: true,
+    score: {
+      p1: [null, null, null, null, null],
+      p2: [null, null, null, null, null]
+    },
+    endscore: {
+      p1: null,
+      p2: null
+    },
+    role: '', //shoot or defend
+    selected: false,
+    active: null,
+    status: '', //<empty>, queue, game
+    shootTime: null,
+    yourScore: null,
+    showResult: false
   },
   methods: {
     select(n) {
-      if (!this.selected) {
+      if (this.status=='game' && !this.selected) {
         if (this.role=='defend')
         {
           time = Date.now() - this.shootTime;
@@ -35,6 +38,19 @@ const App = new Vue({
     set(role, yourScore) {
       this.role = role;
       this.yourScore = yourScore;
+    },
+
+    humanRole() {
+      switch (this.role) {
+        case 'shoot':
+          return 'Strzelasz';
+        case 'defend':
+          return 'Bronisz';
+      }
+    },
+
+    humanResult() {
+      return this.result ? 'GOOOOOL!' : 'OBRONIONO!' ;
     },
 
     switchRole() {
@@ -75,15 +91,16 @@ Socket.on('shoot', (n) => {
 })
 
 Socket.on('result', ({round, shoots, result}) => {
-  console.log(round, shoots, result);
   App.saveResult(round, shoots, result);
 })
 
 Socket.on('switchRole', () => {
   App.switchRole();
+  App.result = null;
 })
 
 Socket.on('end', (end) => {
 	App.status = 'end';
-	App.score = end;
+	App.endscore.p1 = end[0];
+  App.endscore.p2 = end[1];
 })

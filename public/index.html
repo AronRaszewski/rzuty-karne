@@ -12,14 +12,18 @@
       <div v-if="!ok">
         ERROR
       </div>
-      <div class="score">
-        {{ yourScore=='p1' ? 'ty' : 'rywal' }}
-        <score-panel :id="p1" :score="[...score.p1]"></score-panel>
-        <div id="role" v-if="role">
-          {{ role=='shoot' ? 'Strzelasz' : 'Bronisz' }}
+      <div class="score" :style="{'opacity': (status == 'game')*1}">
+	      <div class="p1">
+          {{ yourScore=='p1' ? 'ty' : 'rywal' }}
+          <score-panel :id="'p1'" :score="[...score.p1]"></score-panel>
         </div>
-        <score-panel :id="p2" :score="[...score.p2]"></score-panel>
-        {{ yourScore=='p2' ? 'ty' : 'rywal' }}
+        <div id="role" v-if="role">
+          {{ humanRole() }}
+        </div>
+        <div class="p2">
+          {{ yourScore=='p2' ? 'ty' : 'rywal' }}
+          <score-panel :id="'p2'" :score="[...score.p2]"></score-panel>
+        </div>
       </div>
       <div class="goal">
         <ul>
@@ -27,6 +31,12 @@
         </ul>
         <div id="panelsContainer" v-show="status != 'game'">
           <div v-if="!status" class="panel">
+        		<h3>Instrukcja</h3>
+        		<p>Po zapisaniu się czekaj aż system sparuje Cię z przeciwnikiem. Jeżeli tego dokona zaczyna się konkurs rzutów karne - każdy zawodnik wykonuje po 5 karnych na zmianę.</p>
+        		<p>Gdy strzelasz, wybierz jeden z sześciu sektorów bramki, w który chcesz oddać strzał.</p>
+        		<p>Gdy bronisz, w pewnym momencie podświetli Ci się jeden z sektorów bramki. Kliknij go w celu obronienia strzału.</p>
+        		<p>Jeżeli obaj gracze wykonali po 5 kolejek a wynik jest remisowy gra toczy się dalej do momentu tzw. nagłej śmierci (w danej kolejce jeden gracz strzeli a drugi nie)</p>
+        		<p><b>Powodzenia!</b></p>
             <button type="button" @click="join()">Zapisz się</button>
           </div>
           <div v-if="status=='queue'" class="panel">
@@ -35,7 +45,7 @@
           </div>
           <div v-if="status=='end'" class="panel">
             <p>Wynik końcowy:</p>
-            <p class="big color">{{ score[0] }} - {{ score[1] }}</p>
+            <p class="big color">{{ endscore.p1 }} - {{ endscore.p2 }}</p>
           </div>
         </div>
       </div>

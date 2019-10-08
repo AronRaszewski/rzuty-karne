@@ -100,13 +100,9 @@ body {
 
 .panel {
   text-align: center;
-  background: #303030c0;
+  background: #303030e0;
   min-width: 33.333%;
   min-height: 33.333%;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 1;
   animation: panelAnimation 0.2s both;
 }
@@ -130,6 +126,10 @@ button:hover {
 
 .color {
   color: #fbb000;
+}
+
+.p2 {
+  text-align: right;
 }
 
 @keyframes panelAnimation {
