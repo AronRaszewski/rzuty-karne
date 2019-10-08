@@ -1,1 +1,1 @@
-# rzuty-karne
+# Rzuty karne (in English - penalties)
