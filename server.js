@@ -19,20 +19,22 @@ Server.listen(port, () => {
 
 IO.on('connection', (socket) => {
 
-  socket.on('join', () => {
+  socket.on('join', ({nick}) => {
+    socket.nick = nick;
+    console.log(`${nick} joined!`);
     match.join(socket);
     var matching = match.matchMe(socket);
     if (matching)
     {
       let {opponent, room} = matching;
-      games[room] = new Game(socket, opponent);
+
       socket.join(room);
       opponent.join(room);
       IO.to(room).emit('start');
       let rand = 2*Math.random()>1 ? 0 : 1;
       opponent.emit('settings', {role: rand ? 'defend' : 'shoot', yourScore: 'p1'});
       socket.emit('settings', {role: rand ? 'shoot' : 'defend', yourScore: 'p2'});
-      games[room] = new Game(rand);
+      games[room] = new Game(rand, socket.nick, opponent.nick);
     }
   })
 
