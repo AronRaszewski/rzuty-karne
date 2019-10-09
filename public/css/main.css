@@ -132,6 +132,15 @@ button:hover {
   text-align: right;
 }
 
+input[type="text"] {
+  font: inherit;
+  background: transparent;
+  padding: 4px;
+  border-radius: 6px;
+  color: #fdd333;
+  border: 1px solid #fbb000;
+}
+
 @keyframes panelAnimation {
   0% {
     transform: scale(0);
