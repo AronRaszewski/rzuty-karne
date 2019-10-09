@@ -4,6 +4,7 @@ const App = new Vue({
   el: '#app',
   data: {
     ok: true,
+    nick: '',
     score: {
       p1: [null, null, null, null, null],
       p2: [null, null, null, null, null]
@@ -18,7 +19,8 @@ const App = new Vue({
     status: '', //<empty>, queue, game
     shootTime: null,
     yourScore: null,
-    showResult: false
+    showResult: false,
+    errors: []
   },
   methods: {
     select(n) {
@@ -70,8 +72,16 @@ const App = new Vue({
       })
     },
     join() {
-      this.status = 'queue';
-      Socket.emit('join');
+      this.nick = this.nick.trim();
+      if (this.nick && this.nick.length>=4)
+      {
+        this.status = 'queue';
+        Socket.emit('join', {nick: this.nick});
+      }
+      else
+      {
+        this.errors = ['Nick powinien mieć przynajmniej 4 znaki'];
+      }
     }
   }
 })
