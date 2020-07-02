@@ -2,7 +2,7 @@ const Express = require('express');
 const App = Express();
 const Server = require('http').createServer(App);
 const IO = require('socket.io')(Server);
-const port = 7000;
+const port = 80;
 const MatchOpponent = require('./server/match-opponent');
 const match = new MatchOpponent(IO);
 const Game = require('./server/game');
@@ -27,14 +27,16 @@ IO.on('connection', (socket) => {
     if (matching)
     {
       let {opponent, room} = matching;
-
+      let cfg = {
+        saveTime: 350
+      }
       socket.join(room);
       opponent.join(room);
-      IO.to(room).emit('start');
+      IO.to(room).emit('start', cfg);
       let rand = 2*Math.random()>1 ? 0 : 1;
       opponent.emit('settings', {role: rand ? 'defend' : 'shoot', yourScore: 'p1'});
       socket.emit('settings', {role: rand ? 'shoot' : 'defend', yourScore: 'p2'});
-      games[room] = new Game(rand, socket.nick, opponent.nick);
+      games[room] = new Game(rand, cfg, socket.nick, opponent.nick);
     }
   })
 
@@ -71,7 +73,7 @@ IO.on('connection', (socket) => {
       }
       break;
       case 'defend':
-      if (thisGame.active==n && time <= 450)
+      if (thisGame.active==n && time <= thisGame.saveTime)
       {
         thisGame.result = false;
       }
