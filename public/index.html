@@ -33,11 +33,16 @@
           <div v-if="!status" class="panel">
         		<h3>Instrukcja</h3>
         		<p>Po zapisaniu się czekaj aż system sparuje Cię z przeciwnikiem. Jeżeli tego dokona zaczyna się konkurs rzutów karne - każdy zawodnik wykonuje po 5 karnych na zmianę.</p>
-        		<p>Gdy strzelasz, wybierz jeden z sześciu sektorów bramki, w który chcesz oddać strzał.</p>
-        		<p>Gdy bronisz, w pewnym momencie podświetli Ci się jeden z sektorów bramki. Kliknij go w celu obronienia strzału.</p>
+        		<p>Gdy strzelasz, wybierz jeden z sześciu sektorów bramki, w który chcesz oddać strzał.<br/>
+        		Gdy bronisz, w pewnym momencie podświetli Ci się jeden z sektorów bramki. Kliknij go w celu obronienia strzału.</p>
         		<p>Jeżeli obaj gracze wykonali po 5 kolejek a wynik jest remisowy gra toczy się dalej do momentu tzw. nagłej śmierci (w danej kolejce jeden gracz strzeli a drugi nie)</p>
         		<p><b>Powodzenia!</b></p>
-            <button type="button" @click="join()">Zapisz się</button>
+            <p><label>
+              Przed rozpoczęciem podaj swój nick:
+              <input type="text" name="nick" v-model="nick" required/>
+            </label></p>
+            <p v-for="err in errors" class="error">{{ err }}</p>
+            <button type="button" @click="join()">Zagraj</button>
           </div>
           <div v-if="status=='queue'" class="panel">
             <p class="color"><i class="fas fa-spinner wait fa-2x fa-spin"></i></p>

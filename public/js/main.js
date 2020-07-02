@@ -18,6 +18,7 @@ const App = new Vue({
     active: null,
     status: '', //<empty>, queue, game
     shootTime: null,
+	saveTime: null,
     yourScore: null,
     showResult: false,
     errors: []
@@ -86,8 +87,9 @@ const App = new Vue({
   }
 })
 
-Socket.on('start', () => {
+Socket.on('start', (cfg) => {
   App.status = 'game';
+  App.saveTime = cfg.saveTime;
 })
 
 Socket.on('settings', ({role, yourScore}) => {
@@ -97,7 +99,7 @@ Socket.on('settings', ({role, yourScore}) => {
 Socket.on('shoot', (n) => {
   App.active = n;
   App.shootTime = Date.now();
-  setTimeout(() => {App.active = null}, 450);
+  setTimeout(() => {App.active = null}, App.saveTime);
 })
 
 Socket.on('result', ({round, shoots, result}) => {
